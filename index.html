@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xuataun</title>
+<link rel="icon" href="https://cdn.discordapp.com/icons/1066655845871538237/68909f5a9722f79085f5167f19bc9d78.webp?size=64">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a06;
+    --bg2: #080f09;
+    --bg3: #0d1a0e;
+    --green: #1aff5e;
+    --green-dim: #0dcc48;
+    --green-glow: rgba(26,255,94,0.18);
+    --green-faint: rgba(26,255,94,0.06);
+    --text: #e8f5ea;
+    --text-muted: #7aad84;
+    --border: rgba(26,255,94,0.14);
+    --card: rgba(13,26,14,0.85);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(5,10,6,0.82);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none;
+  }
+  .nav-logo img {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--green);
+    box-shadow: 0 0 12px var(--green-glow);
+  }
+  .nav-logo span {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.4rem; font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--green);
+    text-shadow: 0 0 16px var(--green-glow);
+  }
+
+  .nav-links {
+    display: flex; gap: 32px; list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--green); }
+
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--green);
+    color: var(--green) !important;
+    padding: 8px 20px;
+    border-radius: 4px;
+    transition: background 0.2s, box-shadow 0.2s !important;
+  }
+  .nav-cta:hover {
+    background: var(--green-faint) !important;
+    box-shadow: 0 0 16px var(--green-glow) !important;
+    color: var(--green) !important;
+  }
+
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.45;
+    z-index: 0;
+  }
+
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(5,10,6,0.3) 0%, rgba(5,10,6,0.7) 70%, var(--bg) 100%);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column; align-items: center; gap: 28px;
+    padding: 0 20px;
+  }
+
+  .hero-logo {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    border: 2px solid var(--green);
+    box-shadow: 0 0 40px var(--green-glow), 0 0 80px rgba(26,255,94,0.08);
+    animation: pulse-logo 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-logo {
+    0%, 100% { box-shadow: 0 0 40px var(--green-glow), 0 0 80px rgba(26,255,94,0.08); }
+    50% { box-shadow: 0 0 60px rgba(26,255,94,0.35), 0 0 120px rgba(26,255,94,0.14); }
+  }
+
+  .hero h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--green);
+    text-shadow: 0 0 40px rgba(26,255,94,0.4);
+    line-height: 1;
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  .hero-btns {
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+    margin-top: 8px;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 30px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--green);
+    color: #050a06;
+    border: 1px solid var(--green);
+  }
+  .btn-primary:hover {
+    background: #2fff70;
+    box-shadow: 0 0 30px rgba(26,255,94,0.45);
+    transform: translateY(-2px);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--green);
+    border: 1px solid var(--green);
+  }
+  .btn-outline:hover {
+    background: var(--green-faint);
+    box-shadow: 0 0 20px var(--green-glow);
+    transform: translateY(-2px);
+  }
+  .btn-discord {
+    background: transparent;
+    color: #7289da;
+    border: 1px solid #7289da;
+  }
+  .btn-discord:hover {
+    background: rgba(114,137,218,0.1);
+    box-shadow: 0 0 20px rgba(114,137,218,0.3);
+    transform: translateY(-2px);
+  }
+
+  .scroll-indicator {
+    position: absolute; bottom: 36px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: var(--text-muted);
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    animation: float 2.5s ease-in-out infinite;
+  }
+  .scroll-indicator svg { width: 20px; }
+
+  @keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  section { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
+
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--green);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.8;
+  }
+
+  .section-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+
+  .section-desc {
+    color: var(--text-muted);
+    max-width: 560px;
+    line-height: 1.7;
+    font-size: 1.05rem;
+    font-weight: 300;
+  }
+
+  .stats-bar {
+    background: var(--bg3);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 40px 48px;
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
+    gap: 0;
+  }
+
+  .stat-item {
+    flex: 1; min-width: 160px;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    padding: 16px 32px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  .stat-item:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 2.4rem; font-weight: 700;
+    color: var(--green);
+    text-shadow: 0 0 20px var(--green-glow);
+    letter-spacing: 0.04em;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+    margin-top: 56px;
+  }
+
+  .game-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .game-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(26,255,94,0.08);
+    border-color: rgba(26,255,94,0.3);
+  }
+
+  .game-thumb-wrap {
+    position: relative;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+  .game-thumb {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+    display: block;
+  }
+  .game-card:hover .game-thumb { transform: scale(1.04); }
+
+  .game-thumb-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(5,10,6,0.85) 0%, transparent 60%);
+  }
+
+  .game-play-btn {
+    position: absolute;
+    inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .game-card:hover .game-play-btn { opacity: 1; }
+  .game-play-btn svg {
+    width: 56px; height: 56px;
+    color: var(--green);
+    filter: drop-shadow(0 0 16px rgba(26,255,94,0.6));
+  }
+
+  .game-info {
+    padding: 20px 22px 22px;
+    flex: 1; display: flex; flex-direction: column; gap: 12px;
+  }
+
+  .game-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.2rem; font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--text);
+  }
+
+  .game-stats {
+    display: flex; gap: 20px; flex-wrap: wrap;
+  }
+  .game-stat {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-family: 'Share Tech Mono', monospace;
+  }
+  .game-stat svg { width: 14px; height: 14px; color: var(--green); flex-shrink: 0; }
+  .game-stat span { color: var(--text); font-weight: 600; }
+
+  .game-badge {
+    display: inline-flex;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border: 1px solid rgba(26,255,94,0.3);
+    color: var(--green);
+    background: rgba(26,255,94,0.06);
+    align-self: flex-start;
+  }
+
+  .about-wrap {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-img {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: block;
+  }
+  .about-glow {
+    position: absolute;
+    width: 60%; height: 60%;
+    background: var(--green);
+    filter: blur(80px);
+    opacity: 0.06;
+    top: 20%; left: 20%;
+    pointer-events: none;
+    border-radius: 50%;
+  }
+
+  .developer-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+    gap: 56px;
+    align-items: center;
+  }
+
+  .developer-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(26,255,94,0.22);
+    border-radius: 8px;
+    background:
+      linear-gradient(135deg, rgba(26,255,94,0.08), transparent 42%),
+      rgba(13,26,14,0.9);
+    box-shadow: 0 24px 70px rgba(0,0,0,0.35), inset 0 0 60px rgba(26,255,94,0.025);
+  }
+
+  .developer-card::before {
+    content: '';
+    position: absolute;
+    inset: 14px;
+    border: 1px solid rgba(26,255,94,0.08);
+    border-radius: 5px;
+    pointer-events: none;
+  }
+
+  .developer-top {
+    position: relative;
+    padding: 26px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .developer-avatar {
+    width: 88px;
+    height: 88px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(26,255,94,0.28), transparent 38%),
+      linear-gradient(135deg, #0d1a0e, #122716);
+    border: 1px solid rgba(26,255,94,0.28);
+    color: var(--green);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-shadow: 0 0 24px rgba(26,255,94,0.4);
+  }
+
+  .developer-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--green);
+    line-height: 0.95;
+    letter-spacing: 0.06em;
+    text-shadow: 0 0 24px var(--green-glow);
+  }
+
+  .developer-role {
+    margin-top: 8px;
+    color: var(--text-muted);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .developer-body {
+    position: relative;
+    padding: 26px;
+  }
+
+  .developer-body p {
+    color: var(--text-muted);
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 22px;
+  }
+
+  .developer-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .developer-meta-item {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: rgba(5,10,6,0.36);
+    padding: 12px;
+    min-width: 0;
+  }
+
+  .developer-meta-label {
+    display: block;
+    color: var(--green);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .developer-meta-value {
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    word-break: break-word;
+  }
+
+  .developer-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .developer-actions .btn {
+    padding: 11px 18px;
+    font-size: 0.9rem;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 48px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+    gap: 24px;
+  }
+  .footer-logo {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .footer-logo img {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid var(--border);
+  }
+  .footer-logo span {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--green); letter-spacing: 0.1em;
+  }
+  .footer-links {
+    display: flex; gap: 28px; flex-wrap: wrap;
+  }
+  .footer-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--green); }
+
+  .footer-copy {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--green), transparent);
+    opacity: 0.2;
+    margin: 0;
+  }
+
+  .scanline {
+    position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.04) 3px,
+      rgba(0,0,0,0.04) 4px
+    );
+  }
+
+  .grid-bg {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      linear-gradient(rgba(26,255,94,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,255,94,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .bracket-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .bracket-wrap::before, .bracket-wrap::after {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px;
+    border-color: var(--green);
+    border-style: solid;
+    opacity: 0.5;
+  }
+  .bracket-wrap::before { top: -4px; left: -4px; border-width: 1px 0 0 1px; }
+  .bracket-wrap::after  { bottom: -4px; right: -4px; border-width: 0 1px 1px 0; }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    section { padding: 70px 20px; }
+    .stats-bar { padding: 24px 20px; }
+    .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .stat-item:last-child { border-bottom: none; }
+    .about-wrap, .developer-wrap { grid-template-columns: 1fr; gap: 40px; }
+    .developer-top { align-items: flex-start; flex-direction: column; }
+    .developer-meta { grid-template-columns: 1fr; }
+    footer { flex-direction: column; text-align: center; padding: 32px 20px; }
+    .games-grid { grid-template-columns: 1fr; }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .fade-in-delay-1 { transition-delay: 0.1s; }
+  .fade-in-delay-2 { transition-delay: 0.2s; }
+  .fade-in-delay-3 { transition-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="scanline"></div>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="https://cdn.discordapp.com/icons/1066655845871538237/68909f5a9722f79085f5167f19bc9d78.webp?size=64" alt="Xuataun">
+    <span>XUATAUN</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#games">Games</a></li>
+    <li><a href="#developer">Developer</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="https://discord.gg/xuataun" target="_blank" class="nav-cta">Discord</a></li>
+  </ul>
+</nav>
+
+<section class="hero" style="max-width:100%; padding:0;">
+  <img
+    class="hero-video"
+    src="https://cdn.discordapp.com/attachments/1336689332110626817/1494462870254125097/DiscordBanner2NDVersionOptimised2.gif?ex=6a1aba42&is=6a1968c2&hm=c63e0e16324a0f4a6c80af7343b458a4efa33450805699f948990689bacb7d10&"
+    alt="Xuataun Banner"
+    style="object-position: center; filter: saturate(1.1) brightness(0.85);"
+  >
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <img class="hero-logo" src="https://cdn.discordapp.com/icons/1066655845871538237/68909f5a9722f79085f5167f19bc9d78.webp?size=256" alt="Xuataun">
+    <h1>XUATAUN</h1>
+    <p class="hero-sub">Roblox Game Studio</p>
+    <div class="hero-btns">
+      <a href="#games" class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Explore Games
+      </a>
+      <a href="#developer" class="btn btn-outline">Meet Developer</a>
+      <a href="https://discord.gg/xuataun" target="_blank" class="btn btn-discord">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        Discord
+      </a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat-item fade-in">
+    <div class="stat-num" id="stat-visits">-</div>
+    <div class="stat-label">Total Visits</div>
+  </div>
+  <div class="stat-item fade-in fade-in-delay-1">
+    <div class="stat-num" id="stat-playing">-</div>
+    <div class="stat-label">Playing Now</div>
+  </div>
+  <div class="stat-item fade-in fade-in-delay-2">
+    <div class="stat-num" id="stat-favorites">-</div>
+    <div class="stat-label">Favorites</div>
+  </div>
+  <div class="stat-item fade-in fade-in-delay-3">
+    <div class="stat-num">3</div>
+    <div class="stat-label">Active Games</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<section id="games">
+  <div class="fade-in">
+    <div class="section-label">// our_catalog</div>
+    <h2 class="section-title">Top Hits</h2>
+    <p class="section-desc">Explore the Xuataun game portfolio. Roblox experiences developed for players worldwide.</p>
+  </div>
+  <div class="games-grid" id="games-grid"></div>
+</section>
+
+<div class="divider"></div>
+
+<section id="developer">
+  <div class="developer-wrap">
+    <div class="fade-in">
+      <div class="section-label">// developer_profile</div>
+      <h2 class="section-title">Meet the Scripter Behind Xuataun.</h2>
+      <p class="section-desc">volt_qq is the developer and scripter behind Xuataun's Roblox experiences, building the systems, game flow, and interactive features that keep the studio's games moving.</p>
+    </div>
+
+    <article class="developer-card fade-in fade-in-delay-1">
+      <div class="developer-top">
+<img 
+  class="developer-avatar" 
+  src="https://cdn.discordapp.com/avatars/625253179055144960/69a168fb29f700fdd092597e7645f675.webp?size=1024" 
+  alt="Discord Avatar"
+/>
+<div>
+          <h3 class="developer-name">volt_qq</h3>
+          <div class="developer-role">Developer / Scripter</div>
+        </div>
+      </div>
+      <div class="developer-body">
+        <p>Focused on Roblox scripting, gameplay systems, and modded PLS DONATE-style experiences. From live-game features to community-driven updates, volt_qq handles the technical side that gives Xuataun its identity.</p>
+        <div class="developer-meta">
+          <div class="developer-meta-item">
+            <span class="developer-meta-label">Roblox</span>
+            <span class="developer-meta-value">@VerySecretVolt</span>
+          </div>
+          <div class="developer-meta-item">
+            <span class="developer-meta-label">Discord ID</span>
+            <span class="developer-meta-value">625253179055144960</span>
+          </div>
+          <div class="developer-meta-item">
+            <span class="developer-meta-label">Studio</span>
+            <span class="developer-meta-value">Xuataun</span>
+          </div>
+          <div class="developer-meta-item">
+            <span class="developer-meta-label">Focus</span>
+            <span class="developer-meta-value">Game scripting</span>
+          </div>
+        </div>
+        <div class="developer-actions">
+          <a href="https://www.roblox.com/users/4939249787/profile" target="_blank" class="btn btn-primary">Find on Roblox</a>
+          <a href="https://discord.com/users/625253179055144960" target="_blank" class="btn btn-discord">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+            Discord Profile
+          </a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="about">
+  <div class="about-wrap">
+    <div class="fade-in">
+      <div class="section-label">// about_us</div>
+      <h2 class="section-title">Built Different.<br>Built to Last.</h2>
+      <p class="section-desc" style="margin-bottom:24px;">Xuataun is a Roblox studio mostly known for working on modded games inspired by PLS DONATE. We focus on making them more fun, more interactive, and different from the usual copies you see everywhere.</p>
+      <p class="section-desc" style="margin-bottom:36px;">Join our growing community of players and be part of the next chapter of Xuataun.</p>
+      <div style="display:flex; gap:16px; flex-wrap:wrap;">
+        <a href="https://www.roblox.com/communities/16756900/Xuataun#!/about" target="_blank" class="btn btn-primary">Join Roblox Group</a>
+        <a href="https://discord.gg/xuataun" target="_blank" class="btn btn-discord">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+          Join Discord
+        </a>
+      </div>
+    </div>
+    <div class="about-visual fade-in fade-in-delay-1">
+      <div class="about-glow"></div>
+      <img class="about-img"
+        src="https://cdn.discordapp.com/attachments/1336689332110626817/1494462870254125097/DiscordBanner2NDVersionOptimised2.gif?ex=6a1aba42&is=6a1968c2&hm=c63e0e16324a0f4a6c80af7343b458a4efa33450805699f948990689bacb7d10&"
+        alt="Xuataun Banner"
+      >
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<footer>
+  <div class="footer-logo">
+    <img src="https://cdn.discordapp.com/icons/1066655845871538237/68909f5a9722f79085f5167f19bc9d78.webp?size=64" alt="Xuataun">
+    <span>XUATAUN</span>
+  </div>
+  <div class="footer-links">
+    <a href="#games">Games</a>
+    <a href="#developer">Developer</a>
+    <a href="#about">About</a>
+    <a href="https://www.roblox.com/communities/16756900/Xuataun#!/about" target="_blank">Roblox Group</a>
+    <a href="https://discord.gg/xuataun" target="_blank">Discord</a>
+  </div>
+  <div class="footer-copy">&copy; 2026 Xuataun. All rights reserved.</div>
+</footer>
+
+<script>
+const GAMES = [
+  {
+    id: 88284905325670,
+    name: "PLS DONATE X",
+    url: "https://www.roblox.com/games/88284905325670/",
+    thumb: "https://tr.rbxcdn.com/180DAY-f5b382b5d4ba280b9f6a5e70ae17d4b7/500/280/Image/Jpeg/noFilter",
+    badge: "POPULAR"
+  },
+  {
+    id: 105535631161414,
+    name: "player rng [remake]",
+    url: "https://www.roblox.com/games/105535631161414/player-rng",
+    thumb: "https://tr.rbxcdn.com/180DAY-6d61a71abd70d86a9a05d108c43bc922/500/280/Image/Jpeg/noFilter",
+    badge: "LIVE"
+  },
+  {
+    id: 13401551420,
+    name: "Xuataun Game",
+    url: "https://www.roblox.com/games/13401551420/",
+    thumb: null,
+    badge: "(SHUT DOWN)"
+  }
+];
+
+function fmtNum(n) {
+  if (!n || isNaN(n)) return "-";
+  if (n >= 1e9) return (n/1e9).toFixed(1) + "B";
+  if (n >= 1e6) return (n/1e6).toFixed(1) + "M";
+  if (n >= 1e3) return (n/1e3).toFixed(1) + "K";
+  return n.toString();
+}
+
+function renderCards(statsMap) {
+  const grid = document.getElementById("games-grid");
+  grid.innerHTML = "";
+
+  GAMES.forEach((g, i) => {
+    const s = statsMap[g.id] || {};
+    const visits = fmtNum(s.visits);
+    const playing = fmtNum(s.playing);
+    const favs = fmtNum(s.favorites);
+    const rating = s.rating ? (s.rating * 100).toFixed(0) + "%" : "-";
+
+    const thumb = g.thumb
+      ? `<img class="game-thumb" src="${g.thumb}" alt="${g.name}" loading="lazy" onerror="this.style.background='#0d1a0e'; this.style.display='block';">`
+      : `<div class="game-thumb" style="background: linear-gradient(135deg, #0d1a0e 0%, #1a3320 100%); display:flex; align-items:center; justify-content:center;">
+           <span style="font-size:3rem;">GAME</span>
+         </div>`;
+
+    grid.innerHTML += `
+      <a class="game-card fade-in" href="${g.url}" target="_blank" style="transition-delay:${i*0.1}s">
+        <div class="game-thumb-wrap">
+          ${thumb}
+          <div class="game-thumb-overlay"></div>
+          <div class="game-play-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="game-info">
+          <div class="game-badge">${g.badge}</div>
+          <div class="game-name">${g.name}</div>
+          <div class="game-stats">
+            <div class="game-stat">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <span>${playing}</span> playing
+            </div>
+            <div class="game-stat">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              <span>${visits}</span> visits
+            </div>
+            <div class="game-stat">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>${rating}</span>
+            </div>
+            <div class="game-stat">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <span>${favs}</span> favorites
+            </div>
+          </div>
+        </div>
+      </a>
+    `;
+  });
+
+  observeFadeIns();
+}
+
+async function fetchStats() {
+  const ids = GAMES.map(g => g.id).join(",");
+  try {
+    const res = await fetch(`https://games.roblox.com/v1/games?universeIds=${ids}`);
+    const json = await res.json();
+    const map = {};
+    if (json.data) {
+      json.data.forEach(g => {
+        map[g.id] = {
+          visits: g.visits,
+          playing: g.playing,
+          favorites: g.favoritedCount,
+          rating: g.totalUpVotes > 0 ? g.totalUpVotes / (g.totalUpVotes + g.totalDownVotes) : null
+        };
+      });
+    }
+    return map;
+  } catch {
+    return {};
+  }
+}
+
+function updateStatBar(statsMap) {
+  let totalVisits = 0, totalPlaying = 0, totalFavs = 0;
+  Object.values(statsMap).forEach(s => {
+    totalVisits += (s.visits || 0);
+    totalPlaying += (s.playing || 0);
+    totalFavs += (s.favorites || 0);
+  });
+  if (totalVisits) document.getElementById("stat-visits").textContent = fmtNum(totalVisits);
+  if (totalPlaying) document.getElementById("stat-playing").textContent = fmtNum(totalPlaying);
+  if (totalFavs) document.getElementById("stat-favorites").textContent = fmtNum(totalFavs);
+}
+
+function observeFadeIns() {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".fade-in").forEach(el => io.observe(el));
+}
+
+(async () => {
+  renderCards({});
+  observeFadeIns();
+
+  const stats = await fetchStats();
+  renderCards(stats);
+  updateStatBar(stats);
+  observeFadeIns();
+})();
+</script>
+</body>
+</html>
